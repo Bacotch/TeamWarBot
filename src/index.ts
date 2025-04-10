@@ -11,5 +11,3 @@ if(!token){
 const client = new Client ({
     intents:[GatewayIntentBits.Guilds]
 })
-
-そうでなければかってもべつにいいんだけどねえ
