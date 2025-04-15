@@ -1,13 +1,9 @@
-import { Client, Events, GatewayIntentBits } from 'discord.js';
-import "dotenv/config";
-
-const token = process.env.DISCORD_BOT_TOKEN;
-
-if(!token){
-    console.error("INVALID TOKEN ERROR");
-    process.exit(1);
+import { config } from "dotenv";
+import { Bot } from "./Bot.ts";
+config()
+function main(){
+    const bot = new Bot();
+    bot.start();
 }
 
-const client = new Client ({
-    intents:[GatewayIntentBits.Guilds]
-})
+main();
