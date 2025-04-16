@@ -1,4 +1,5 @@
-import Fastify, {FastifyInstance,FastifyRequest,FastifyReply} from "fastify";
+import Fastify, {FastifyInstance} from "fastify";
+import user from "../routes/user.ts"
 
 export class Server {
     public instance: FastifyInstance;
@@ -6,7 +7,7 @@ export class Server {
 
     constructor(port:number){
         this.port= port;
-        this.instance = Fastify();
+        this.instance = Fastify({logger: true});
         this.start();
     };
 
@@ -19,13 +20,9 @@ export class Server {
             process.exit(1);
         }
     }
-
-    public post(path: string, handler: any){
-        this.instance.post(path,handler);
+    private async routing(){
+        await this.instance.register(user)
     }
-
-    public get(path: string, handler: any){
-        this.instance.get(path,handler)
-    }
+    
 }
 

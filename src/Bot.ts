@@ -4,11 +4,12 @@ import path, { join } from "path";
 import { fileURLToPath } from "url";
 import { Command } from "./definitions/interface.ts";
 import { Database } from "./database/index.ts";
+import { Server } from "./api/server.ts";
 
 export class Bot extends Client {
     public readonly database: Database
     public readonly commands: Collection<string,Command>;
-   // public readonly http;
+    public readonly server: Server
 
     constructor(){
         super({
@@ -17,7 +18,7 @@ export class Bot extends Client {
 
         this.database = new Database("./user_links.db")
         this.commands = new Collection();
-        //this.http = new Http();
+        this.server = new Server(3000);
     }
 
     async start(){

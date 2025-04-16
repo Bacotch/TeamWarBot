@@ -1,5 +1,5 @@
 import http from "http";
-import { uniqueSql,insertUserInfo } from "../database";
+import { uniqueSql,insertUserInfo }
 
 const server = http.createServer(async (req,res)=>{
     if(req.method === "POST" && req.url === "/player-info") {
