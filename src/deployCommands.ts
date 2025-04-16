@@ -1,4 +1,4 @@
-import {APIApplicationCommand, REST,Routes} from "discord.js";
+import {APIApplicationCommand, REST, Routes} from "discord.js";
 import "dotenv/config";
 import fs from "fs/promises";
 import path from "path";
@@ -17,7 +17,7 @@ if(!(token&&appID&&guildID)){
 
 //将来的に動的importに関してはinterfaceを追加する
 
-let commands:any = [];
+let commands:Command[] = [];
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const commandDir = join(currentDir,"commands")
 const subDir = await fs.readdir(commandDir)
@@ -36,7 +36,7 @@ for (const dir of subDir){
 
 const rest = new REST().setToken(token);
 
-(async ()=>{
+(async () => {
     try {
         console.log('Starting rest.put...');
         const data = await rest.put(

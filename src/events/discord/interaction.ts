@@ -7,15 +7,15 @@ export default {
     
         if (!interaction.isChatInputCommand()) return;
     
-        const command = interaction.client as Bot
-        const cmd = command.commands.get(interaction.commandName);
-        if(!cmd){
+        const bot = interaction.client as Bot
+        const command = bot.commands.get(interaction.commandName);
+        if(!command || !command.execute){
             console.error(`No command matching ${interaction.commandName} was found.`);
             return;
         };
     
         try {
-            cmd.execute(interaction);
+            command.execute(interaction);
         } catch (e) {
             console.error(e);
             if(interaction.replied || interaction.deferred){

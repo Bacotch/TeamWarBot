@@ -2,22 +2,22 @@ import { Client, Collection, GatewayIntentBits } from "discord.js"
 import fs from "fs/promises";
 import path, { join } from "path";
 import { fileURLToPath } from "url";
-import { Command } from "./definitions/class.ts";
-import interaction from "./events/discord/interaction.ts";
+import { Command } from "./definitions/interface.ts";
+import { Database } from "./database/index.ts";
 
 export class Bot extends Client {
-    public readonly db: any;
+    public readonly database: Database
     public readonly commands: Collection<string,Command>;
-    public readonly http: any;
+   // public readonly http;
 
     constructor(){
         super({
             intents:[GatewayIntentBits.Guilds]
         })
 
-       // this.db = new DB();
+        this.database = new Database("./user_links.db")
         this.commands = new Collection();
-        //this.http = new HTTP();
+        //this.http = new Http();
     }
 
     async start(){
@@ -29,12 +29,13 @@ export class Bot extends Client {
             const eventFiles = (await fs.readdir(join(eventDir,dir))).filter(file=>file.endsWith(".ts"))
             for(const file of eventFiles) {
                 const event = (await import(`./events/${dir}/${file}`)).default
-                try {
-                    this.on(event.name,(...arg)=> event.execute(...arg))
-                    console.log(`load "${event.default.name}" event.`)
-                } catch(e){
-                    console.warn(`event [${file}] can't be imported properly.(${e})`)
-                }
+                    try {
+                        this.on(event.name,(...arg)=> event.execute(...arg))
+                        console.log(`load "${event.name}" event.`)
+                    } catch(e){
+                        console.warn(`event [${file}] can't be imported properly.(${e})`)
+                    }
+               
             }
         }
 
@@ -43,13 +44,18 @@ export class Bot extends Client {
         for (const dir of subCommandDir){
             const commandFiles = (await fs.readdir(join(commandDir,dir))).filter(file=>file.endsWith(".ts"))
             for(const file of commandFiles) {
-                const command = new (await import(`./commands/${dir}/${file}`)).default
-                try {
-                   this.commands.set(command.data.name,command)
-                    console.log(`load "${command.data.name}" command.`)
-                } catch(e){
-                    console.warn(`command [${file}] can't be imported properly.(${e})`)
+                const command:Command = new (await import(`./commands/${dir}/${file}`)).default
+                if(command.data && command.execute){
+                    try {
+                        this.commands.set(command.data.name,command)
+                         console.log(`load "${command.data.name}" command.`)
+                     } catch(e){
+                         console.warn(`command [${file}] can't be imported properly.(${e})`)
+                     }
+                } else {
+                    console.warn(`command [${file}] is lacking data or execute propery.`) 
                 }
+                
             }
         }
         
