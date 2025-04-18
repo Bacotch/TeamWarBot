@@ -1,0 +1,25 @@
+// .vscode/settings.json
+{
+  "editor.formatOnSave": true, // 保存時に自動でフォーマット
+  "editor.codeActionsOnSave": {
+    // 保存時に ESLint の自動修正を実行 (fixable な問題全て)
+    "source.fixAll.eslint": "explicit" // または true
+  },
+
+  // Prettier 拡張機能を使っている場合、デフォルトのフォーマッターとして設定
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    // JSX を使う場合
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    // TSX を使う場合
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
