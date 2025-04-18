@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Events, MessageFlags} from "discord.js";
-import { Bot } from "../../Bot.ts";
+import { Bot } from "../../core/Bot.ts";
 
 export default {
     name:Events.InteractionCreate,
